@@ -1,0 +1,84 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '3.5.14'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+def buildVersion="develop-${new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())}-SNAPSHOT"
+def projectGroup="com.skedio"
+def projectArtifact="core-starter"
+
+group = projectGroup
+version = buildVersion
+description = projectArtifact
+
+def envFile= rootProject.file(".env")
+if(envFile.exists()) {
+    envFile.eachLine {l -> {
+        if(l.contains("=")) {
+            def line = l.split("=", 2)
+            System.setProperty(line[0].trim(), line[1].trim())
+        }
+    }
+    }
+}
+def GIT_USERNAME=System.getProperty("GIT_USERNAME")
+def GIT_TOKEN=System.getProperty("GIT_TOKEN")
+
+print("buildVersion: ${buildVersion}\ngroupId: ${projectGroup}\nartifactId: ${projectArtifact}")
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    api 'org.springframework.boot:spring-boot-autoconfigure'
+    api 'org.projectlombok:lombok'
+    api 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId=projectGroup
+            artifactId=projectArtifact
+            version=buildVersion
+
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name="GithubPackage"
+            url=uri("https://maven.pkg.github.com/Jamies-Tran/skedio")
+            credentials {
+                username=GIT_USERNAME
+                password=GIT_TOKEN
+            }
+        }
+    }
+}

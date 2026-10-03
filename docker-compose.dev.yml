@@ -19,14 +19,14 @@ services:
       retries: 3
       timeout: 10s
 
-  focuz-cache-dev:
+  skedio-cache-dev:
     image: redis:latest
-    container_name: focuz-cache-dev
+    container_name: skedio-cache-dev
     networks:
-      - focuz-dev
+      - skeio-dev
     volumes:
-      - ./cache/redis/dev/data:/data
-      - ./cache/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./infrastructure/cache/redis/dev/data:/data
+      - ./infrastructure/cache/redis/redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
     ports:
@@ -38,18 +38,18 @@ services:
       timeout: 10s
 
 
-  focuz-mongo-dev:
+  skedio-mongo-dev:
     image: mongo:latest
-    container_name: focuz-mongo-dev
+    container_name: skedio-mongo-dev
     networks:
       - focuz-dev
     volumes:
-      - ./database/mongo/dev/data:/data/db
+      - ./infrastructure/database/mongo/dev/data:/data/db
     restart: always
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: focuz
+      MONGO_INITDB_ROOT_USERNAME: skedio
       MONGO_INITDB_ROOT_PASSWORD: 123
       MONGO_INITDB_DATABASE: auth
     healthcheck:
@@ -69,32 +69,32 @@ services:
       retries: 3
       timeout: 10s
 
-  focuz-rabbitmq-dev:
+  skedio-rabbitmq-dev:
     image: rabbitmq:4-management
-    container_name: focuz-rabbitmq-dev
+    container_name: skedio-rabbitmq-dev
     networks:
-      - focuz-dev
+      - skedio-dev
     ports:
       - "5672:5672"
       - "15672:15672"
     environment:
-       RABBITMQ_DEFAULT_USER: focuz
+       RABBITMQ_DEFAULT_USER: skedio
        RABBITMQ_DEFAULT_PASS: 123
     volumes:
-      - ./database/rabbitmq/dev/data:/var/lib/rabbitmq
+      - ./infrastructure/database/rabbitmq/dev/data:/var/lib/rabbitmq
 
   administration-flyway-dev:
     image: flyway/flyway:latest
     container_name: administration-migration-dev
     networks:
-      - focuz-dev
+      - skedio-dev
     command:
-      - "-url=jdbc:mysql://focuz-db-dev:3306/administration?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
+      - "-url=jdbc:mysql://skedio-db-dev:3306/administration?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
       - "-user=root"
       - "-password=123"
       - "migrate"
     volumes:
-      - ./migration/focuz-migration/flyway/mysql/administration:/flyway/sql
+      - ./migration/skedio-migration/flyway/mysql/administration:/flyway/sql
     depends_on:
       focuz-db-dev:
           condition: service_healthy
@@ -103,14 +103,14 @@ services:
     image: flyway/flyway:latest
     container_name: auth-flyway-dev
     networks:
-      - focuz-dev
+      - skedio-dev
     command:
-      - "-url=jdbc:mysql://focuz-db-dev:3306/auth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
+      - "-url=jdbc:mysql://skedio-db-dev:3306/auth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
       - "-user=root"
       - "-password=123"
       - "migrate"
     volumes:
-      - ./migration/focuz-migration/flyway/mysql/auth:/flyway/sql
+      - ./migration/skedio-migration/flyway/mysql/auth:/flyway/sql
     depends_on:
       focuz-db-dev:
         condition: service_healthy
@@ -120,7 +120,7 @@ services:
       context: ./platform-services/discovery-service/.
     container_name: discovery-dev
     networks:
-      - focuz-dev
+      - skedio-dev
     ports:
       - "8761:8761"
 
@@ -129,7 +129,7 @@ services:
       context: ./platform-services/gateway/.
     container_name: gateway-dev
     networks:
-      - focuz-dev
+      - skedio-dev
     ports:
       - "8082:8082"
     environment:
@@ -137,47 +137,47 @@ services:
     depends_on:
       - discovery-dev
 
-  administration-dev:
-    build:
-      context: ./business-services/administration-service/.
-    container_name: administration-dev
-    networks:
-      - focuz-dev
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    depends_on:
-      focuz-db-dev:
-        condition: service_healthy
-      focuz-cache-dev:
-        condition: service_healthy
-      discovery-dev:
-        condition: service_started
+#  administration-dev:
+#    build:
+#      context: ./business-services/administration-service/.
+#    container_name: administration-dev
+#    networks:
+#      - skedio-dev
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    depends_on:
+#      focuz-db-dev:
+#        condition: service_healthy
+#      focuz-cache-dev:
+#        condition: service_healthy
+#      discovery-dev:
+#        condition: service_started
 
-  auth-dev:
-    build:
-      context: ./business-services/auth-service/.
-    container_name: auth-dev
-    networks:
-      - focuz-dev
-    ports:
-      - "8083:8081"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    depends_on:
-      focuz-db-dev:
-        condition: service_healthy
-      focuz-cache-dev:
-        condition: service_healthy
-      focuz-mongo-dev:
-        condition: service_healthy
-      discovery-dev:
-        condition: service_started
+#  auth-dev:
+#    build:
+#      context: ./business-services/auth-service/.
+#    container_name: auth-dev
+#    networks:
+#      - skedio-dev
+#    ports:
+#      - "8083:8081"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    depends_on:
+#      focuz-db-dev:
+#        condition: service_healthy
+#      focuz-cache-dev:
+#        condition: service_healthy
+#      focuz-mongo-dev:
+#        condition: service_healthy
+#      discovery-dev:
+#        condition: service_started
 
 volumes:
-  wazado-mysql:
+  skedio-mysql:
 
 networks:
-  focuz-dev:
+  skedio-dev:
       external: true
