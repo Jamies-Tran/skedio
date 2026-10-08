@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: administration-service
+  datasource:
+    url: jdbc:mysql://skedio-db-dev:3306/administration
+    username: root
+    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+core:
+  permitAll: /**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-dev:8761/eureka

@@ -14,30 +14,32 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class FunctionLogAspect {
 
-    @Around("execution(* com.skedio.*.service..*(..))")
+    @Around("execution(* com.skedio..service..*(..))")
     public Object logExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         long starter = System.currentTimeMillis();
         String method = joinPoint.getSignature().getName();
+        String className = joinPoint.getTarget().getClass().getName();
+        String classPathMethod = "%s.%s".formatted(className, method);
         String traceId = MDC.get(TraceContext.TRACE_ID);
         try {
             Object result = joinPoint.proceed();
             long duration = System.currentTimeMillis() - starter;
             log.info(
-                    "SUCCESS | traceId={} | method={} | duration={}",
+                    "[{}] method={} | duration={} | status=success",
                     traceId,
-                    method,
+                    classPathMethod,
                     duration
             );
             return result;
         } catch (Exception e) {
             long duration = System.currentTimeMillis() - starter;
-            log.info(
-                    "FAIL | traceId={} | method={} | duration={}",
+            log.error(
+                    "[{}] method={} | duration={} | status=fail",
                     traceId,
-                    method,
+                    classPathMethod,
                     duration
             );
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 }

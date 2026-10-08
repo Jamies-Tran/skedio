@@ -7,8 +7,28 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./migration/focuz-migration/flyway/mysql/init:/docker-entrypoint-initdb.d
-      - ./database/mysql/dev/data:/var/lib/mysql
+      - ./migration/skedio-migration/flyway/mysql/init:/docker-entrypoint-initdb.d
+      - ./infrastructure/database/mysql/dev/data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      TZ: Asia/Ho_Chi_Minh
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p123" ]
+      interval: 5s
+      retries: 3
+      timeout: 10s
+
+  skedio-db-local:
+    image: mysql:latest
+    container_name: skedio-db-local
+    networks:
+      - skedio-dev
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./migration/skedio-migration/flyway/mysql/init:/docker-entrypoint-initdb.d
+      - ./infrastructure/database/mysql/local/data:/var/lib/mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 123
@@ -23,7 +43,7 @@ services:
     image: redis:latest
     container_name: skedio-cache-dev
     networks:
-      - skeio-dev
+      - skedio-dev
     volumes:
       - ./infrastructure/cache/redis/dev/data:/data
       - ./infrastructure/cache/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -42,7 +62,7 @@ services:
     image: mongo:latest
     container_name: skedio-mongo-dev
     networks:
-      - focuz-dev
+      - skedio-dev
     volumes:
       - ./infrastructure/database/mongo/dev/data:/data/db
     restart: always
@@ -96,24 +116,40 @@ services:
     volumes:
       - ./migration/skedio-migration/flyway/mysql/administration:/flyway/sql
     depends_on:
-      focuz-db-dev:
+      skedio-db-dev:
           condition: service_healthy
 
-  auth-flyway-dev:
+  administration-flyway-local:
     image: flyway/flyway:latest
-    container_name: auth-flyway-dev
+    container_name: administration-migration-local
     networks:
       - skedio-dev
     command:
-      - "-url=jdbc:mysql://skedio-db-dev:3306/auth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
+      - "-url=jdbc:mysql://skedio-db-local:3306/administration?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
       - "-user=root"
       - "-password=123"
       - "migrate"
     volumes:
-      - ./migration/skedio-migration/flyway/mysql/auth:/flyway/sql
+      - ./migration/skedio-migration/flyway/mysql/administration:/flyway/sql
     depends_on:
-      focuz-db-dev:
+      skedio-db-dev:
         condition: service_healthy
+
+#  auth-flyway-dev:
+#    image: flyway/flyway:latest
+#    container_name: auth-flyway-dev
+#    networks:
+#      - skedio-dev
+#    command:
+#      - "-url=jdbc:mysql://skedio-db-dev:3306/auth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Ho_Chi_Minh"
+#      - "-user=root"
+#      - "-password=123"
+#      - "migrate"
+#    volumes:
+#      - ./migration/skedio-migration/flyway/mysql/auth:/flyway/sql
+#    depends_on:
+#      focuz-db-dev:
+#        condition: service_healthy
 
   discovery-dev:
     build:
@@ -137,23 +173,23 @@ services:
     depends_on:
       - discovery-dev
 
-#  administration-dev:
-#    build:
-#      context: ./business-services/administration-service/.
-#    container_name: administration-dev
-#    networks:
-#      - skedio-dev
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      SPRING_PROFILES_ACTIVE: dev
-#    depends_on:
-#      focuz-db-dev:
-#        condition: service_healthy
-#      focuz-cache-dev:
-#        condition: service_healthy
-#      discovery-dev:
-#        condition: service_started
+  administration-dev:
+    build:
+      context: ./business-services/administration-service/.
+    container_name: administration-dev
+    networks:
+      - skedio-dev
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      skedio-db-dev:
+        condition: service_healthy
+      skedio-cache-dev:
+        condition: service_healthy
+      discovery-dev:
+        condition: service_started
 
 #  auth-dev:
 #    build:

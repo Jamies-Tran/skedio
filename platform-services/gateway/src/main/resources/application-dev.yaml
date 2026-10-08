@@ -1,15 +1,15 @@
 spring:
-#  cloud:
-#    gateway:
-#      server:
-#        webflux:
-#          routes:
-#            - id: administration-service
-#              uri: lb://ADMINISTRATION-SERVICE
-#              predicates:
-#                - Path=/api/administration-service/**
-#              filters:
-#                - RewritePath=/api/administration-service/(?<segment>.*),/${segment}
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: administration-service
+              uri: lb://ADMINISTRATION-SERVICE
+              predicates:
+                - Path=/api/administration-service/**
+              filters:
+                - RewritePath=/api/administration-service/(?<segment>.*),/${segment}
 #            - id: auth-service
 #              uri: lb://AUTH-SERVICE
 #              predicates:

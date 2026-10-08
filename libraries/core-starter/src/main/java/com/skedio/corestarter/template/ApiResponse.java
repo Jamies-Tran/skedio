@@ -12,10 +12,11 @@ import java.util.List;
 
 @Builder
 public record ApiResponse<T>(
-        LocalDateTime responseAt,
-        Boolean isSuccess,
-        String errorCode,
         String traceId,
+        Boolean isSuccess,
+        String message,
+        LocalDateTime responseAt,
+        String errorCode,
         Metadata metadata,
         T data
 ) {
@@ -28,7 +29,7 @@ public record ApiResponse<T>(
             Integer totalPages
     ) {
         public static Metadata ofEmpty() {
-            return Metadata.builder().build();
+            return null;
         }
 
         public static Metadata ofList(List<?> data) {
@@ -50,44 +51,37 @@ public record ApiResponse<T>(
         }
     }
 
-    public static <T> ApiResponse<T> list(T data) {
-        if (!(data instanceof List<?>)) {
-            throw new RuntimeException("data is not a list");
-        }
-        Metadata metadata = Metadata.ofList((List<?>) data);
-
-        return ApiResponse.<T>builder()
+    public static <T> ApiResponse<List<T>> list(List<T> data) {
+        Metadata metadata = Metadata.ofList(data);
+        return ApiResponse.<List<T>>builder()
                 .responseAt(LocalDateTime.now())
                 .isSuccess(true)
+                .message("success")
                 .traceId(MDC.get("traceId"))
                 .metadata(metadata)
                 .data(data)
                 .build();
     }
 
-    public static <T> ApiResponse<T> page(T data) {
-        if (!(data instanceof Page<?>)) {
-            throw new RuntimeException("data is not a page");
-        }
-        Metadata metadata = Metadata.ofPage((Page<?>) data);
-
-        return ApiResponse.<T>builder()
+    public static <T> ApiResponse<List<T>> page(Page<T> data) {
+        Metadata metadata = Metadata.ofPage(data);
+        List<T> content = data.getContent();
+        return ApiResponse.<List<T>>builder()
                 .responseAt(LocalDateTime.now())
                 .isSuccess(true)
+                .message("success")
                 .metadata(metadata)
                 .traceId(MDC.get("traceId"))
-                .data(data)
+                .data(content)
                 .build();
     }
 
     public static <T> ApiResponse<T> value(T data) {
-        if (data instanceof Collection<?>) {
-            throw new RuntimeException("data is not valid");
-        }
-        Metadata metadata = Metadata.ofPage((Page<?>) data);
+        Metadata metadata = Metadata.ofEmpty();
         return ApiResponse.<T>builder()
                 .responseAt(LocalDateTime.now())
                 .isSuccess(true)
+                .message("success")
                 .metadata(metadata)
                 .traceId(MDC.get("traceId"))
                 .data(data)
@@ -99,9 +93,10 @@ public record ApiResponse<T>(
         return ApiResponse.<String>builder()
                 .responseAt(LocalDateTime.now())
                 .isSuccess(false)
+                .errorCode(applicationException.getErrorCode().getCode())
+                .message(applicationException.getMessage())
                 .metadata(metadata)
                 .traceId(MDC.get("traceId"))
-                .data(applicationException.getMessage())
                 .build();
     }
 
