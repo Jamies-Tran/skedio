@@ -1,1 +1,6 @@
-CREATE INDEX idx_application_uuid ON applications(application_uuid);
+ALTER TABLE applications ADD COLUMN avatar VARCHAR(256) DEFAULT '';
+
+ALTER TABLE applications ADD COLUMN description VARCHAR(2500) DEFAULT '';
+
+ALTER TABLE applications ADD COLUMN enabled BOOLEAN DEFAULT true;
+

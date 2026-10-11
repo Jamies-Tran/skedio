@@ -10,21 +10,20 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
+interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
 
     Boolean existsByPhone(String phone);
 
-    Optional<UserEntity> findByUserUuid(UUID userUuid);
+    Optional<UserJpaEntity> findByUserUuid(UUID userUuid);
 
-    Optional<UserEntity> findByUserId(Long userId);
+    Optional<UserJpaEntity> findByUserId(Long userId);
 
     @Query("""
         SELECT u
-        FROM UserEntity u
+        FROM UserJpaEntity u
         WHERE  (:#{#userSearch.searchEmpty()} = true
                         OR u.search LIKE %:#{#userSearch.search()}%)
                 AND (:#{#userSearch.statusCodesEmpty()} = true
@@ -32,5 +31,5 @@ interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
                 AND (:#{#userSearch.timeRangeEmpty()} = true
                         OR u.createdAt BETWEEN :#{#userSearch.timeRangeFirst()} AND :#{#userSearch.timeRangeLast()})
         """)
-    Page<UserEntity> findAll(UserSearch userSearch, Pageable pageable);
+    Page<UserJpaEntity> findAll(UserSearch userSearch, Pageable pageable);
 }

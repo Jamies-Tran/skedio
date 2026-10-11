@@ -3,6 +3,7 @@ package com.skedio.administrationservice.usermanagement.user.domain.argument;
 import com.skedio.corestarter.utils.SorterUtils;
 import com.skedio.corestarter.utils.StringConvertUtils;
 import lombok.Builder;
+import lombok.With;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.util.StringUtils;
 
@@ -11,8 +12,11 @@ import java.util.List;
 
 @Builder
 public record UserSearch(
+        @With
         String search,
+        @With
         List<String> statusCodes,
+        @With
         List<LocalDateTime> timeRange,
         String sorter,
         Integer current,
@@ -21,12 +25,11 @@ public record UserSearch(
     public UserSearch computeSearch() {
         String search = StringConvertUtils.normalizeWhiteSpace(this.search);
         List<String> statusCodes = this.statusCodes.isEmpty() ? List.of() : this.statusCodes;
-        List<LocalDateTime> timeRange = this.timeRange.isEmpty() ? List.of() : this.timeRange;
-        return UserSearch.builder()
-                .search(search)
-                .statusCodes(statusCodes)
-                .timeRange(timeRange)
-                .build();
+        List<LocalDateTime> timeRange = this.timeRange == null ? List.of() : this.timeRange;
+        return this
+                .withSearch(search)
+                .withStatusCodes(statusCodes)
+                .withTimeRange(timeRange);
     }
 
     public Boolean searchEmpty() {

@@ -16,6 +16,7 @@ public record ApiResponse<T>(
         Boolean isSuccess,
         String message,
         LocalDateTime responseAt,
+        List<String> messages,
         String errorCode,
         Metadata metadata,
         T data
@@ -107,7 +108,7 @@ public record ApiResponse<T>(
                 .isSuccess(false)
                 .traceId(MDC.get("traceId"))
                 .metadata(metadata)
-                .data(errors)
+                .messages(errors)
                 .build();
     }
 }

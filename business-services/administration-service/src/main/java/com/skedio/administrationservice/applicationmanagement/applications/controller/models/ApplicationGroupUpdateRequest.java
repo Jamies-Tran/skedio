@@ -2,11 +2,10 @@ package com.skedio.administrationservice.applicationmanagement.applications.cont
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ApplicationGroupRequest(
+public record ApplicationGroupUpdateRequest(
         @NotBlank(message = "Name must not null")
         String applicationGroupName,
         String avatar,
-        String description,
-        Boolean enabled
+        String description
 ) {
 }

@@ -7,12 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@Repository
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRepository {
@@ -20,18 +21,18 @@ public class UserRepository {
     UserEntityMapper mapper;
 
     public User save(User user) {
-        UserEntity userEntity = mapper.toEntity(user);
-        UserEntity savedUserEntity = repository.save(userEntity);
-        return mapper.toDomain(savedUserEntity);
+        UserJpaEntity userJpaEntity = mapper.toEntity(user);
+        UserJpaEntity savedUserJpaEntity = repository.save(userJpaEntity);
+        return mapper.toDomain(savedUserJpaEntity);
     }
 
     public Optional<User> findByUserUuid(UUID userUuid) {
-        Optional<UserEntity> entity = repository.findByUserUuid(userUuid);
+        Optional<UserJpaEntity> entity = repository.findByUserUuid(userUuid);
         return entity.map(mapper::toDomain);
     }
 
     public Optional<User> findByUserId(Long userId) {
-        Optional<UserEntity> entity = repository.findByUserId(userId);
+        Optional<UserJpaEntity> entity = repository.findByUserId(userId);
         return entity.map(mapper::toDomain);
     }
 

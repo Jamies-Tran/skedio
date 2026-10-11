@@ -7,9 +7,9 @@ import com.skedio.administrationservice.usermanagement.user.controller.models.Us
 import com.skedio.administrationservice.usermanagement.user.domain.User;
 import com.skedio.administrationservice.usermanagement.user.domain.argument.*;
 import com.skedio.administrationservice.usermanagement.user.service.command.*;
-import com.skedio.administrationservice.usermanagement.user.service.query.GetDetailByIdUseCase;
-import com.skedio.administrationservice.usermanagement.user.service.query.GetDetailByUuidUseCase;
-import com.skedio.administrationservice.usermanagement.user.service.query.SearchPageUseCase;
+import com.skedio.administrationservice.usermanagement.user.service.query.UserGetDetailByIdUseCase;
+import com.skedio.administrationservice.usermanagement.user.service.query.UserGetDetailByUuidUseCase;
+import com.skedio.administrationservice.usermanagement.user.service.query.UserSearchPageUseCase;
 import com.skedio.corestarter.template.ApiResponse;
 import com.skedio.corestarter.template.Void;
 import lombok.AccessLevel;
@@ -30,14 +30,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    CreateUseCase createUseCase;
-    SearchPageUseCase searchPageUseCase;
-    GetDetailByIdUseCase getDetailByIdUseCase;
-    GetDetailByUuidUseCase getDetailByUuidUseCase;
-    UpdateUseCase updateUseCase;
-    ActiveUseCase activeUseCase;
-    InActiveUseCase inActiveUseCase;
-    DeleteUseCase deleteUseCase;
+    UserCreateUseCase createUseCase;
+    UserSearchPageUseCase searchPageUseCase;
+    UserGetDetailByIdUseCase getDetailByIdUseCase;
+    UserGetDetailByUuidUseCase getDetailByUuidUseCase;
+    UserUpdateUseCase updateUseCase;
+    UserActiveUseCase activeUseCase;
+    UserInActiveUseCase inActiveUseCase;
+    UserDeleteUseCase deleteUseCase;
     UserRequestMapper requestMapper;
     UserResponseMapper responseMapper;
 

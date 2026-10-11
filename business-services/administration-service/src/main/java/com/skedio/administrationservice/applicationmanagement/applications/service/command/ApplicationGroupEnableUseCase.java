@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ApplicationGroupDisableUseCase extends Command<ApplicationGroupUuid, Void> {
+public class ApplicationGroupEnableUseCase extends Command<ApplicationGroupUuid, Void> {
     ApplicationGroupRepository applicationGroups;
 
     @Override
@@ -30,7 +30,7 @@ public class ApplicationGroupDisableUseCase extends Command<ApplicationGroupUuid
             throw notFoundException();
         }
         ApplicationGroup applicationGroup = find.get();
-        applicationGroup = applicationGroup.disable();
+        applicationGroup = applicationGroup.enable();
         ApplicationGroup disabled = applicationGroups.save(applicationGroup);
         return Void.of(disabled);
     }

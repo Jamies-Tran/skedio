@@ -1,4 +1,8 @@
 package com.skedio.administrationservice.applicationmanagement.applications.domain.argument;
 
-public record ApplicationGroupUuid() {
+import java.util.UUID;
+
+public record ApplicationGroupUuid(
+        UUID uuid
+) {
 }

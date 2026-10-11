@@ -1,4 +1,8 @@
 package com.skedio.administrationservice.applicationmanagement.applications.domain.argument;
 
-public record ApplicationGroupCreateList() {
+import java.util.List;
+
+public record ApplicationGroupCreateList(
+        List<ApplicationGroupCreate> createList
+) {
 }

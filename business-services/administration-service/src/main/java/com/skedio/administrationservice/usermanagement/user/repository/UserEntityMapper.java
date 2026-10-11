@@ -6,5 +6,5 @@ import com.skedio.corestarter.template.EntityMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(config = GlobalMapStructConfig.class)
-interface UserEntityMapper extends EntityMapper<UserEntity, User> {
+interface UserEntityMapper extends EntityMapper<UserJpaEntity, User> {
 }
