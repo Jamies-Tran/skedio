@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CreateUseCase extends Command<UserCreate, Void> {
+public class UserCreateUseCase extends Command<UserCreate, Void> {
     UserRepository users;
     PasswordEncoder passwordEncoder;
 

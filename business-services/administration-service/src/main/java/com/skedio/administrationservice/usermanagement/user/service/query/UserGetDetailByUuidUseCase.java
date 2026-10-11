@@ -14,20 +14,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class GetDetailByIdUseCase extends Query<UserGetDetail, Void> {
+public class UserGetDetailByUuidUseCase extends Query<UserGetDetail, Void> {
     UserRepository users;
 
     @Override
     public Void handle(UserGetDetail query) {
-        Long userId = query.userId();
-        if (userId == null) {
-            throw userIdNullPointerException();
+        UUID userUuid = query.userUuid();
+        if (userUuid == null) {
+            throw userUuidNullPointerException();
         }
-        Optional<User> find = users.findByUserId(userId);
+        Optional<User> find = users.findByUserUuid(userUuid);
         if(find.isEmpty()) {
             throw userNotFoundException();
         }
@@ -38,7 +39,7 @@ public class GetDetailByIdUseCase extends Query<UserGetDetail, Void> {
         return new ApplicationException(EnumUserException.USER_NOT_FOUND, EnumUserException.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    private ApplicationException userIdNullPointerException() {
-        return new ApplicationException(EnumUserException.USER_ID_NOT_FOUND, EnumUserException.USER_ID_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+    private ApplicationException userUuidNullPointerException() {
+        return new ApplicationException(EnumUserException.USER_UUID_NOT_FOUND, EnumUserException.USER_UUID_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

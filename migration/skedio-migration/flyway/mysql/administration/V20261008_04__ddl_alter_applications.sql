@@ -1,0 +1,1 @@
+CREATE INDEX idx_application_uuid ON applications(application_uuid);

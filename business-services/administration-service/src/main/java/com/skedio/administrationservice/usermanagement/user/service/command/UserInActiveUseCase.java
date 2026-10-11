@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class InActiveUseCase extends Command<UserUuid, Void> {
+public class UserInActiveUseCase extends Command<UserUuid, Void> {
     UserRepository users;
 
     @Override

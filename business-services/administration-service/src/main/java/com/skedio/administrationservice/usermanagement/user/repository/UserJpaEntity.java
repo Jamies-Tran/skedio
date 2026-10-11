@@ -17,12 +17,12 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-class UserEntity extends BaseAuditorEntity {
+class UserJpaEntity extends BaseAuditorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
 
-    @UuidGenerator(style = UuidGenerator.Style.AUTO)
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     @JdbcTypeCode(Types.CHAR)
     @Column(name = "user_uuid", updatable = false, nullable = false)
     UUID userUuid;

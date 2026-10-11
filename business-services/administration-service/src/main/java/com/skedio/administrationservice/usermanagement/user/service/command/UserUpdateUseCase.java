@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UpdateUseCase extends Command<UserUpdate, Void> {
+public class UserUpdateUseCase extends Command<UserUpdate, Void> {
     UserRepository users;
 
     @Override
