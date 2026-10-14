@@ -4,6 +4,7 @@ import com.skedio.administrationservice.applicationmanagement.applications.domai
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -16,6 +17,9 @@ interface ApplicationGroupJpaRepository extends JpaRepository<ApplicationGroupJp
     Boolean existsByApplicationName(String applicationName);
 
     Optional<ApplicationGroupJpaEntity> findByApplicationUuid(UUID applicationUuid);
+
+    @Modifying
+    void deleteByApplicationUuid(UUID applicationUuid);
 
     @Query("""
         SELECT ag

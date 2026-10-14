@@ -15,14 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ApplicationGroupSearchPageUseCase extends Query<ApplicationGroupSearch, Void> {
+public class ApplicationGroupSearchPageUseCase extends Query<ApplicationGroupSearch, Page<ApplicationGroup>> {
     ApplicationGroupRepository applicationGroups;
 
     @Override
-    public Void handle(ApplicationGroupSearch query) {
+    public Page<ApplicationGroup> handle(ApplicationGroupSearch query) {
         PageRequest pageRequest = query.pageRequest();
         query = query.computeSearch();
-        Page<ApplicationGroup> page = applicationGroups.findAll(query, pageRequest);
-        return Void.of(page);
+        return applicationGroups.findAll(query, pageRequest);
     }
 }

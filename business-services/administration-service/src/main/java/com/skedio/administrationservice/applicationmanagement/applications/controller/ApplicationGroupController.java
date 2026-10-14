@@ -5,7 +5,15 @@ import com.skedio.administrationservice.applicationmanagement.applications.domai
 import com.skedio.administrationservice.applicationmanagement.applications.domain.argument.*;
 import com.skedio.administrationservice.applicationmanagement.applications.service.command.*;
 import com.skedio.administrationservice.applicationmanagement.applications.service.query.ApplicationGroupGetDetailUseCase;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationGroupUserResponse;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationGroupUserResponseMapper;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationUserUuidListRequest;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.service.query.ApplicationGroupGetUserUseCase;
 import com.skedio.administrationservice.applicationmanagement.applications.service.query.ApplicationGroupSearchPageUseCase;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.domain.argument.ApplicationGroupGetUser;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.domain.argument.ApplicationUserAddList;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupAddUserListUseCase;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupClearUserUserCase;
 import com.skedio.corestarter.template.ApiResponse;
 import com.skedio.corestarter.template.Void;
 import lombok.AccessLevel;
@@ -59,9 +67,8 @@ public class ApplicationGroupController {
             @RequestParam(required = false, defaultValue = "25") Integer pageSize
     ) {
         ApplicationGroupSearch groupSearch = new ApplicationGroupSearch(search, enabled, timeRange, sorter, current, pageSize);
-        Void page = searchPageUseCase.handle(groupSearch);
-        Page<ApplicationGroup> applicationGroups = (Page<ApplicationGroup>) page.data();
-        Page<ApplicationGroupResponse> responses = applicationGroups.map(responseMapper::toDto);
+        Page<ApplicationGroup> page = searchPageUseCase.handle(groupSearch);
+        Page<ApplicationGroupResponse> responses = page.map(responseMapper::toDto);
         return ApiResponse.page(responses);
     }
 

@@ -1,9 +1,6 @@
 package com.skedio.administrationservice.usermanagement.user.controller;
 
-import com.skedio.administrationservice.usermanagement.user.controller.models.UserRequest;
-import com.skedio.administrationservice.usermanagement.user.controller.models.UserRequestMapper;
-import com.skedio.administrationservice.usermanagement.user.controller.models.UserResponse;
-import com.skedio.administrationservice.usermanagement.user.controller.models.UserResponseMapper;
+import com.skedio.administrationservice.usermanagement.user.controller.models.*;
 import com.skedio.administrationservice.usermanagement.user.domain.User;
 import com.skedio.administrationservice.usermanagement.user.domain.argument.*;
 import com.skedio.administrationservice.usermanagement.user.service.command.*;

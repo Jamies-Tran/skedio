@@ -48,6 +48,10 @@ public class UserRepository {
         return repository.existsByPhone(phone);
     }
 
+    public Boolean existsByUserUuid(UUID userUuid) {
+        return repository.existsByUserUuid(userUuid);
+    }
+
     public Page<User> findAll(UserSearch userSearch) {
         PageRequest pageRequest = userSearch.pageRequest();
         userSearch = userSearch.computeSearch();
@@ -56,10 +60,6 @@ public class UserRepository {
     }
 
     public void delete(UUID userUuid) {
-        Optional<User> find = findByUserUuid(userUuid);
-        if(find.isPresent()) {
-            User user = find.get();
-            repository.deleteById(user.userId());
-        }
+        repository.deleteByUserUuid(userUuid);
     }
 }

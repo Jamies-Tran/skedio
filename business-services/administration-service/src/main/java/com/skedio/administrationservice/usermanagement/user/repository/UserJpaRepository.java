@@ -4,6 +4,7 @@ import com.skedio.administrationservice.usermanagement.user.domain.argument.User
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +18,14 @@ interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
 
     Boolean existsByPhone(String phone);
 
+    Boolean existsByUserUuid(UUID userUuid);
+
     Optional<UserJpaEntity> findByUserUuid(UUID userUuid);
 
     Optional<UserJpaEntity> findByUserId(Long userId);
+
+    @Modifying
+    void deleteByUserUuid(UUID userUuid);
 
     @Query("""
         SELECT u

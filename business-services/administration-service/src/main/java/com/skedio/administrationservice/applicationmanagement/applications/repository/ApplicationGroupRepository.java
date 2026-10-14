@@ -2,7 +2,7 @@ package com.skedio.administrationservice.applicationmanagement.applications.repo
 
 import com.skedio.administrationservice.applicationmanagement.applications.domain.ApplicationGroup;
 import com.skedio.administrationservice.applicationmanagement.applications.domain.argument.ApplicationGroupSearch;
-import com.skedio.administrationservice.usermanagement.user.domain.User;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.repository.ApplicationUserDaoMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +20,7 @@ import java.util.UUID;
 public class ApplicationGroupRepository {
     ApplicationGroupJpaRepository repository;
     ApplicationGroupEntityMapper mapper;
+    ApplicationUserDaoMapper daoMapper;
 
     public List<ApplicationGroup> saveAll(List<ApplicationGroup> applicationGroups) {
         List<ApplicationGroupJpaEntity> entities = mapper.toEntity(applicationGroups);
@@ -52,10 +53,6 @@ public class ApplicationGroupRepository {
     }
 
     public void delete(UUID applicationGroupUuid) {
-        Optional<ApplicationGroup> find = findByUuid(applicationGroupUuid);
-        if(find.isPresent()) {
-            ApplicationGroup applicationGroup = find.get();
-            repository.deleteById(applicationGroup.applicationId());
-        };
+        repository.deleteByApplicationUuid(applicationGroupUuid);
     }
 }
