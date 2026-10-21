@@ -25,9 +25,9 @@ public class UserCreateUseCase extends Command<UserCreate, Void> {
     public Void handle(UserCreate command) {
         User user = command.user();
         validate(user);
-        user = user.encodePasswordWith(passwordEncoder);
-        user = user.computeBeforeSave();
-        User createdUser = users.save(user);
+        User encodedPassword = user.encodePasswordWith(passwordEncoder);
+        User computeBeforeSave = encodedPassword.computeBeforeSave();
+        User createdUser = users.save(computeBeforeSave);
         return Void.of(createdUser);
     }
 

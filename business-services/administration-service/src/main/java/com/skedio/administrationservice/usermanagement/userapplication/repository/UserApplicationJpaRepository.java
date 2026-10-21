@@ -16,8 +16,9 @@ interface UserApplicationJpaRepository extends JpaRepository<UserApplicationJpaE
         SELECT COUNT(a) > 0
         FROM UaApplicationGroup a
         WHERE a.applicationUuid = :applicationUuid
+                AND a.enabled = TRUE
         """)
-    Boolean existsApplicationByApplicationUuid(UUID applicationUuid);
+    Boolean existsApplicationByApplicationUuidAndEnabled(UUID applicationUuid);
 
     @Query("""
         SELECT COUNT(u) > 0

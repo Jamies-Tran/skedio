@@ -31,15 +31,14 @@ public class UserUpdateUseCase extends Command<UserUpdate, Void> {
             throw notFoundException();
         }
         User user = find.get();
-        User update = command.update();
-        validateUpdate(user, update);
-        user = user.apply(update);
-        user = user.computeBeforeSave();
-        User saved = users.save(user);
+        validateUpdate(user, command);
+        User apply = user.apply(command);
+        User computeBeforeSave = apply.computeBeforeSave();
+        User saved = users.save(computeBeforeSave);
         return Void.of(saved);
     }
 
-    private void validateUpdate(User user, User update) {
+    private void validateUpdate(User user, UserUpdate update) {
         if(!Objects.equals(user.username(), update.username())) {
             if(users.existsByUsername(update.username())) {
                 throw duplicateException();

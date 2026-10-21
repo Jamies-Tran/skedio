@@ -25,4 +25,7 @@ public class ApplicationGroupJpaEntity {
     @Column(name = "application_uuid")
     @JdbcTypeCode(Types.CHAR)
     UUID applicationUuid;
+
+    @Column(name = "enabled")
+    Boolean enabled;
 }

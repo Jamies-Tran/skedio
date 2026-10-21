@@ -19,19 +19,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ApplicationGroupCreateListUseCase extends Command<ApplicationGroupCreateList, Void> {
+public class ApplicationGroupCreateListUseCase extends Command<ApplicationGroupCreateList, List<ApplicationGroup>> {
     ApplicationGroupRepository applicationGroups;
 
     @Override
-    public Void handle(ApplicationGroupCreateList command) {
+    public List<ApplicationGroup> handle(ApplicationGroupCreateList command) {
         List<ApplicationGroupCreate> applicationGroupCreates = command.createList();
         validateBeforeSave(applicationGroupCreates);
         List<ApplicationGroup> applications = ApplicationGroup.from(applicationGroupCreates);
-        applications = applications.stream()
+        List<ApplicationGroup> computeBeforeSave = applications.stream()
                 .map(ApplicationGroup::computeBeforeSave)
                 .toList();
-        List<ApplicationGroup> saved = applicationGroups.saveAll(applications);
-        return Void.of(saved);
+        return applicationGroups.saveAll(computeBeforeSave);
     }
 
     private void validateBeforeSave(List<ApplicationGroupCreate> creates) {

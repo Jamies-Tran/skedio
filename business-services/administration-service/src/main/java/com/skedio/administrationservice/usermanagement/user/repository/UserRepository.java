@@ -52,9 +52,7 @@ public class UserRepository {
         return repository.existsByUserUuid(userUuid);
     }
 
-    public Page<User> findAll(UserSearch userSearch) {
-        PageRequest pageRequest = userSearch.pageRequest();
-        userSearch = userSearch.computeSearch();
+    public Page<User> findAll(UserSearch userSearch, PageRequest pageRequest) {
         return repository.findAll(userSearch, pageRequest)
                 .map(mapper::toDomain);
     }

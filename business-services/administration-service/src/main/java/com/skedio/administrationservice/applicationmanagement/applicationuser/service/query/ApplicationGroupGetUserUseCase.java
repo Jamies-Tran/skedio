@@ -20,7 +20,7 @@ public class ApplicationGroupGetUserUseCase extends Query<ApplicationGroupGetUse
     @Override
     public Page<ApplicationUser> handle(ApplicationGroupGetUser query) {
         PageRequest pageRequest = query.pageRequest();
-        query = query.computeSearch();
-        return applicationGroupUsers.findUserInApplication(query, pageRequest);
+        ApplicationGroupGetUser computeSearch = query.computeSearch();
+        return applicationGroupUsers.findUserInApplication(computeSearch, pageRequest);
     }
 }

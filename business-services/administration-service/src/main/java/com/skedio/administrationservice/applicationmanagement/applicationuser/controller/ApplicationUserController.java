@@ -52,17 +52,17 @@ public class ApplicationUserController {
         return ApiResponse.page(responses);
     }
 
-    @PostMapping("/{applicationUuid}/add-users")
+    @PostMapping("/add-users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void addUserListToApplication(@PathVariable UUID applicationUuid, @RequestBody @Validated ApplicationUserUuidListRequest request) {
+    void addUserListToApplication(@RequestParam UUID applicationUuid, @RequestBody @Validated ApplicationUserUuidListRequest request) {
         List<UUID> userUuids = request.userUuids();
         ApplicationUserAddList addList = new ApplicationUserAddList(applicationUuid, userUuids);
         addUserListUseCase.handle(addList);
     }
 
-    @DeleteMapping("/{applicationUuid}/clear-users")
+    @DeleteMapping("/clear-users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void clearUserInApplication(@PathVariable UUID applicationUuid) {
+    void clearUserInApplication(@RequestParam UUID applicationUuid) {
         ApplicationGroupUuid uuid = new ApplicationGroupUuid(applicationUuid);
         clearUserUserCase.handle(uuid);
     }

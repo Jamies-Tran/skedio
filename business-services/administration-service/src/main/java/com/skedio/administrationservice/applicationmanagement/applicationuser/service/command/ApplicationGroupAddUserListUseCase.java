@@ -25,7 +25,7 @@ public class ApplicationGroupAddUserListUseCase extends Command<ApplicationUserA
     @Override
     public Void handle(ApplicationUserAddList command) {
         UUID applicationUuid = command.applicationUuid();
-        Boolean existsApp = applicationUsers.existsApplicationByApplicationUuid(applicationUuid);
+        Boolean existsApp = applicationUsers.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
         if(!existsApp) {
             throw appNotFoundException();
         }

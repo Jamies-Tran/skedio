@@ -21,7 +21,7 @@ public class ApplicationGroupSearchPageUseCase extends Query<ApplicationGroupSea
     @Override
     public Page<ApplicationGroup> handle(ApplicationGroupSearch query) {
         PageRequest pageRequest = query.pageRequest();
-        query = query.computeSearch();
-        return applicationGroups.findAll(query, pageRequest);
+        ApplicationGroupSearch computeSearch = query.computeSearch();
+        return applicationGroups.findAll(computeSearch, pageRequest);
     }
 }

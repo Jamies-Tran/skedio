@@ -28,9 +28,9 @@ public class UserInActiveUseCase extends Command<UserUuid, Void> {
             throw userNotFound();
         }
         User user = find.get();
-        user = user.inactive();
-        User updated = users.save(user);
-        return Void.of(updated);
+        User inactive = user.inactive();
+        User saved = users.save(inactive);
+        return Void.of(saved);
     }
     private ApplicationException userNotFound() {
         return new ApplicationException(EnumUserException.USER_NOT_FOUND, EnumUserException.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);

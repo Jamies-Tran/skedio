@@ -10,7 +10,8 @@ public record ApplicationGroupUpdate(
         UUID applicationUuid,
         String applicationName,
         String avatar,
-        String description
+        String description,
+        Boolean enabled
 ) {
     public static ApplicationGroupUpdate from(UUID applicationUuid, ApplicationGroupUpdateRequest request) {
         return ApplicationGroupUpdate.builder()
@@ -18,6 +19,7 @@ public record ApplicationGroupUpdate(
                 .applicationName(request.applicationGroupName())
                 .avatar(request.avatar())
                 .description(request.description())
+                .enabled(request.enabled())
                 .build();
     }
 }

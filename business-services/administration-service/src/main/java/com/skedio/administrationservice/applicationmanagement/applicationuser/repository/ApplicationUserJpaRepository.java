@@ -41,8 +41,9 @@ public interface ApplicationUserJpaRepository extends JpaRepository<ApplicationU
         SELECT COUNT(a) > 0
         FROM AuApplication a
         WHERE a.applicationUuid = :applicationUuid
+                AND a.enabled = TRUE
         """)
-    Boolean existsApplicationByApplicationUuid(UUID applicationUuid);
+    Boolean existsApplicationByApplicationUuidAndEnabled(UUID applicationUuid);
 
     @Query("""
         SELECT au.userUuid
@@ -50,4 +51,12 @@ public interface ApplicationUserJpaRepository extends JpaRepository<ApplicationU
         WHERE au.applicationUuid = :applicationUuid
         """)
     List<UUID> findAllUserUuidByApplicationUuid(UUID applicationUuid);
+
+    @Query("""
+        SELECT COUNT(au) > 0
+        FROM ApplicationUserJpaEntity au
+        INNER JOIN UserJpaEntity u ON au.userUuid = u.userUuid
+        WHERE au.applicationUuid = :applicationUuid
+        """)
+    Boolean existUserInApplication(UUID applicationUuid);
 }

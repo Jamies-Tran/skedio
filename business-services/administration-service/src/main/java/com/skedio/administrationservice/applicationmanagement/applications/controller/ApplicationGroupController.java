@@ -2,18 +2,11 @@ package com.skedio.administrationservice.applicationmanagement.applications.cont
 
 import com.skedio.administrationservice.applicationmanagement.applications.controller.models.*;
 import com.skedio.administrationservice.applicationmanagement.applications.domain.ApplicationGroup;
+import com.skedio.administrationservice.applicationmanagement.applications.domain.Client;
 import com.skedio.administrationservice.applicationmanagement.applications.domain.argument.*;
 import com.skedio.administrationservice.applicationmanagement.applications.service.command.*;
 import com.skedio.administrationservice.applicationmanagement.applications.service.query.ApplicationGroupGetDetailUseCase;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationGroupUserResponse;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationGroupUserResponseMapper;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationUserUuidListRequest;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.service.query.ApplicationGroupGetUserUseCase;
 import com.skedio.administrationservice.applicationmanagement.applications.service.query.ApplicationGroupSearchPageUseCase;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.domain.argument.ApplicationGroupGetUser;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.domain.argument.ApplicationUserAddList;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupAddUserListUseCase;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupClearUserUserCase;
 import com.skedio.corestarter.template.ApiResponse;
 import com.skedio.corestarter.template.Void;
 import lombok.AccessLevel;
@@ -33,7 +26,6 @@ import java.util.UUID;
 @RequestMapping("/v1/api/applications")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@SuppressWarnings("unchecked")
 public class ApplicationGroupController {
     ApplicationGroupCreateListUseCase createListUseCase;
     ApplicationGroupSearchPageUseCase searchPageUseCase;
@@ -43,6 +35,7 @@ public class ApplicationGroupController {
     ApplicationGroupDisableUseCase disableUseCase;
     ApplicationGroupDeleteUseCase deleteUseCase;
     ApplicationGroupResponseMapper responseMapper;
+    ClientResponseMapper clientResponseMapper;
 
     @PostMapping("/create-list")
     @ResponseStatus(HttpStatus.CREATED)
@@ -50,8 +43,7 @@ public class ApplicationGroupController {
         List<ApplicationGroupRequest> applicationGroupRequest = requestList.applicationGroups();
         List<ApplicationGroupCreate> applicationGroupCreates = ApplicationGroupCreate.from(applicationGroupRequest);
         ApplicationGroupCreateList applicationGroupCreateList = new ApplicationGroupCreateList(applicationGroupCreates);
-        Void savedList = createListUseCase.handle(applicationGroupCreateList);
-        List<ApplicationGroup> saved = (List<ApplicationGroup>) savedList.data();
+        List<ApplicationGroup> saved  = createListUseCase.handle(applicationGroupCreateList);
         List<ApplicationGroupResponse> responses = responseMapper.toDto(saved);
         return ApiResponse.list(responses);
     }

@@ -30,9 +30,9 @@ public class ApplicationGroupDisableUseCase extends Command<ApplicationGroupUuid
             throw notFoundException();
         }
         ApplicationGroup applicationGroup = find.get();
-        applicationGroup = applicationGroup.disable();
-        ApplicationGroup disabled = applicationGroups.save(applicationGroup);
-        return Void.of(disabled);
+        ApplicationGroup disabled = applicationGroup.disable();
+        ApplicationGroup saved = applicationGroups.save(disabled);
+        return Void.of(saved);
     }
 
     private ApplicationException notFoundException() {

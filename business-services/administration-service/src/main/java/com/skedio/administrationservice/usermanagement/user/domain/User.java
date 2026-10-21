@@ -1,5 +1,6 @@
 package com.skedio.administrationservice.usermanagement.user.domain;
 
+import com.skedio.administrationservice.usermanagement.user.domain.argument.UserUpdate;
 import com.skedio.corestarter.utils.StringConvertUtils;
 import lombok.With;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,12 +70,17 @@ public record User(
                 .withStatusName(inactive.getName());
     }
 
-    public User apply(User user) {
+    public User apply(UserUpdate update) {
+        String newUsername = StringUtils.hasText(update.username()) ? update.username() : this.username;
+        String newFirstName = StringUtils.hasText(update.firstName()) ? update.firstName() : this.firstName;
+        String newLastName = StringUtils.hasText(update.lastName()) ? update.lastName() : this.lastName;
+        String newEmail = StringUtils.hasText(update.email()) ? update.email() : this.email;
+        String newPhone = StringUtils.hasText(update.phone()) ? update.phone() : this.phone;
         return this
-                .withUsername(user.username)
-                .withFirstName(user.firstName)
-                .withLastName(user.lastName)
-                .withEmail(user.email)
-                .withPhone(user.phone);
+                .withUsername(newUsername)
+                .withFirstName(newFirstName)
+                .withLastName(newLastName)
+                .withEmail(newEmail)
+                .withPhone(newPhone);
     }
 }

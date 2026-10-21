@@ -39,11 +39,15 @@ public class ApplicationUserRepository {
                 .allMatch(repository::existsUserByUserUuid);
     }
 
-    public Boolean existsApplicationByApplicationUuid(UUID applicationUuid) {
-        return repository.existsApplicationByApplicationUuid(applicationUuid);
+    public Boolean existsApplicationByApplicationUuidAndEnabled(UUID applicationUuid) {
+        return repository.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
     }
 
     public List<UUID> findAllUserUuidExistInApplication(UUID applicationUuid) {
         return repository.findAllUserUuidByApplicationUuid(applicationUuid);
+    }
+
+    public Boolean existsUserInApplication(UUID applicationUuid) {
+        return repository.existUserInApplication(applicationUuid);
     }
 }

@@ -11,7 +11,6 @@ public record UserResponse(
         String email,
         String phone,
         String statusCode,
-        String statusName,
-        Boolean deleted
+        String statusName
 ) {
 }

@@ -28,8 +28,8 @@ public class UserApplicationRepository {
         return repository.existsByUserUuidAndApplicationUuid(userUuid, applicationUuid);
     }
 
-    public Boolean existsApplicationByApplicationUuid(UUID applicationUuid) {
-        return repository.existsApplicationByApplicationUuid(applicationUuid);
+    public Boolean existsApplicationByApplicationUuidAndEnabled(UUID applicationUuid) {
+        return repository.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
     }
 
     public Boolean existsUserByUserUuid(UUID userUuid) {

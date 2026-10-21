@@ -28,8 +28,8 @@ public class UserActiveUseCase extends Command<UserUuid, Void> {
             throw userNotFound();
         }
         User user = find.get();
-        user = user.active();
-        User updated = users.save(user);
+        User active = user.active();
+        User updated = users.save(active);
         return Void.of(updated);
     }
     private ApplicationException userNotFound() {

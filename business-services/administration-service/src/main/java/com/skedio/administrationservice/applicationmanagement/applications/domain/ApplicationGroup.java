@@ -5,6 +5,7 @@ import com.skedio.administrationservice.applicationmanagement.applications.domai
 import com.skedio.corestarter.utils.StringConvertUtils;
 import lombok.Builder;
 import lombok.With;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,13 +50,15 @@ public record ApplicationGroup(
     }
 
     public ApplicationGroup apply(ApplicationGroupUpdate update) {
-        String applicationName = update.applicationName();
-        String avatar = update.avatar();
-        String description = update.description();
+        String applicationName = StringUtils.hasText(update.applicationName()) ? update.applicationName() : this.applicationName;
+        String avatar = StringUtils.hasText(update.avatar()) ? update.avatar() : this.avatar;
+        String description = StringUtils.hasText(update.description()) ? update.description() : this.description;
+        Boolean enabled = update.enabled() != null ? update.enabled() : this.enabled;
         return this
                 .withApplicationName(applicationName)
                 .withAvatar(avatar)
-                .withDescription(description);
+                .withDescription(description)
+                .withEnabled(enabled);
     }
 
     public ApplicationGroup disable() {

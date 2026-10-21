@@ -28,7 +28,7 @@ public class UserApplicationAssignUseCase extends Command<UserApplicationAssign,
             throw userNotFountException();
         }
         UUID applicationUuid = command.applicationUuid();
-        Boolean existApplicationUuid = userApplications.existsApplicationByApplicationUuid(applicationUuid);
+        Boolean existApplicationUuid = userApplications.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
         if(!existApplicationUuid) {
             throw appNotFountException();
         }

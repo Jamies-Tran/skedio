@@ -33,4 +33,12 @@ interface ApplicationGroupJpaRepository extends JpaRepository<ApplicationGroupJp
                         AND :#{#search.timeRangeLast()})
         """)
     Page<ApplicationGroupJpaEntity> findAll(ApplicationGroupSearch search, Pageable pageable);
+
+    @Query("""
+        SELECT COUNT(au) > 0
+        FROM ApApplicationUser au
+        INNER JOIN ApUser u ON u.userUuid = au.userUuid
+        WHERE au.applicationUuid = :applicationUuid
+        """)
+    Boolean existUserInApplication(UUID applicationUuid);
 }

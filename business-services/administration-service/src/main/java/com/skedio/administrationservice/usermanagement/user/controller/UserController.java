@@ -87,9 +87,8 @@ public class UserController {
 
     @PutMapping("/{userUuid}")
     @ResponseStatus(HttpStatus.OK)
-    ApiResponse<UserResponse> update(@PathVariable UUID userUuid, @RequestBody @Validated UserRequest request) {
-        User update = requestMapper.toDomain(request);
-        UserUpdate userUpdate = new UserUpdate(userUuid, update);
+    ApiResponse<UserResponse> update(@PathVariable UUID userUuid, @RequestBody @Validated UserUpdateRequest request) {
+        UserUpdate userUpdate = UserUpdate.from(userUuid, request);
         Void handle = updateUseCase.handle(userUpdate);
         User updated =  (User) handle.data();
         UserResponse userResponse = responseMapper.toDto(updated);

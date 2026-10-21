@@ -2,11 +2,11 @@ package com.skedio.administrationservice.applicationmanagement.applications.repo
 
 import com.skedio.administrationservice.applicationmanagement.applications.domain.ApplicationGroup;
 import com.skedio.administrationservice.applicationmanagement.applications.domain.argument.ApplicationGroupSearch;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.repository.ApplicationUserDaoMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ApplicationGroupRepository {
     ApplicationGroupJpaRepository repository;
     ApplicationGroupEntityMapper mapper;
-    ApplicationUserDaoMapper daoMapper;
+    ClientEntityMapper clientEntityMapper;
 
     public List<ApplicationGroup> saveAll(List<ApplicationGroup> applicationGroups) {
         List<ApplicationGroupJpaEntity> entities = mapper.toEntity(applicationGroups);
@@ -54,5 +54,13 @@ public class ApplicationGroupRepository {
 
     public void delete(UUID applicationGroupUuid) {
         repository.deleteByApplicationUuid(applicationGroupUuid);
+    }
+
+    public Boolean existUserInApplication(UUID applicationUuid) {
+        return repository.existUserInApplication(applicationUuid);
+    }
+
+    public Boolean existClientInApplication(UUID applicationUuid) {
+        return repository.existUserInApplication(applicationUuid);
     }
 }

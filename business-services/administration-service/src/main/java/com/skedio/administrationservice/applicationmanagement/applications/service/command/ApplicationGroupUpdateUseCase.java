@@ -33,8 +33,8 @@ public class ApplicationGroupUpdateUseCase extends Command<ApplicationGroupUpdat
         ApplicationGroup applicationGroup = find.get();
         validateBeforeUpdate(applicationGroup, command);
         ApplicationGroup apply = applicationGroup.apply(command);
-        apply = apply.computeBeforeSave();
-        ApplicationGroup saved = applicationGroups.save(apply);
+        ApplicationGroup computeBeforeSave = apply.computeBeforeSave();
+        ApplicationGroup saved = applicationGroups.save(computeBeforeSave);
         return Void.of(saved);
     }
 

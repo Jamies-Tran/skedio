@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,8 @@ public class UserSearchPageUseCase extends Query<UserSearch, Page<User>> {
 
     @Override
     public Page<User> handle(UserSearch userSearch) {
-        return users.findAll(userSearch);
+        PageRequest pageRequest = userSearch.pageRequest();
+        UserSearch computeSearch = userSearch.computeSearch();
+        return users.findAll(computeSearch, pageRequest);
     }
 }
