@@ -13,7 +13,8 @@ public enum EnumClientException implements ApplicationErrorCode {
     APP_NOT_FOUND("CLIENT_001", "Application not found"),
     CLIENT_DUP_IN_LIST("CLIENT_001", "Client name duplicate in list"),
     CLIENT_DUP_IN_DB("CLIENT_002", "Client name duplicated"),
-    CLIENT_NOT_FOUND("CLIENT_003", "Client not found");
+    CLIENT_NOT_FOUND("CLIENT_003", "Client not found"),
+    CLIENT_IN_USE("CLIENT_004", "Client in use");
 
     String code;
     String message;

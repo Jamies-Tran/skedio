@@ -30,12 +30,14 @@ public class ApplicationGroupDeleteUseCase extends Command<ApplicationGroupUuid,
 
     private void allowDelete(UUID applicationGroupUuid) {
         Boolean existUserInApp = applicationGroups.existUserInApplication(applicationGroupUuid);
-        if (existUserInApp) {
-            throw existUserException();
+        Boolean existClientInApp = applicationGroups.existClientInApplication(applicationGroupUuid);
+        if (existUserInApp || existClientInApp) {
+            throw appInUseException();
         }
+
     }
 
-    private ApplicationException existUserException() {
-        return new ApplicationException(EnumApplicationGroupException.APP_EXIST_USER, EnumApplicationGroupException.APP_EXIST_USER.getMessage(), HttpStatus.BAD_REQUEST);
+    private ApplicationException appInUseException() {
+        return new ApplicationException(EnumApplicationGroupException.APP_IN_USE, EnumApplicationGroupException.APP_IN_USE.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

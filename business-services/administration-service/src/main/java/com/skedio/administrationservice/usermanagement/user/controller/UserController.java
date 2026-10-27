@@ -68,7 +68,7 @@ public class UserController {
     @GetMapping("/get-by-id/{userId}")
     @ResponseStatus(HttpStatus.OK)
     ApiResponse<UserResponse> getDetailByUserId(@PathVariable Long userId) {
-        UserGetDetail userGetDetail = UserGetDetail.getByUserId(userId);
+        UserId userGetDetail = new UserId(userId);
         Void find = getDetailByIdUseCase.handle(userGetDetail);
         User foundUser = (User) find.data();
         UserResponse userResponse = responseMapper.toDto(foundUser);
@@ -78,8 +78,8 @@ public class UserController {
     @GetMapping("/get-by-uuid/{userUuid}")
     @ResponseStatus(HttpStatus.OK)
     ApiResponse<UserResponse> getDetailByUserUuid(@PathVariable UUID userUuid) {
-        UserGetDetail userGetDetail = UserGetDetail.getByUserUuid(userUuid);
-        Void find = getDetailByUuidUseCase.handle(userGetDetail);
+        UserUuid uuid = new UserUuid(userUuid);
+        Void find = getDetailByUuidUseCase.handle(uuid);
         User foundUser = (User) find.data();
         UserResponse userResponse = responseMapper.toDto(foundUser);
         return ApiResponse.value(userResponse);

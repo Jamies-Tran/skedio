@@ -13,7 +13,7 @@ public enum EnumApplicationGroupException implements ApplicationErrorCode {
     APP_NOT_FOUND("APP_001", "Application Not Found"),
     APP_DUPLICATE_IN_LIST("APP_002", "Application duplicate in list"),
     APP_EXISTS("APP_003", "Application exists"),
-    APP_EXIST_USER("APP_004", "Application exist user"),;
+    APP_IN_USE("APP_004", "Application in use"),;
 
     String code;
     String message;

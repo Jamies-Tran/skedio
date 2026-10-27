@@ -1,7 +1,7 @@
 package com.skedio.administrationservice.usermanagement.user.service.query;
 
 import com.skedio.administrationservice.usermanagement.user.domain.User;
-import com.skedio.administrationservice.usermanagement.user.domain.argument.UserGetDetail;
+import com.skedio.administrationservice.usermanagement.user.domain.argument.UserId;
 import com.skedio.administrationservice.usermanagement.user.domain.error.EnumUserException;
 import com.skedio.administrationservice.usermanagement.user.repository.UserRepository;
 import com.skedio.corestarter.advice.ApplicationException;
@@ -18,15 +18,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserGetDetailByIdUseCase extends Query<UserGetDetail, Void> {
+public class UserGetDetailByIdUseCase extends Query<UserId, Void> {
     UserRepository users;
 
     @Override
-    public Void handle(UserGetDetail query) {
+    public Void handle(UserId query) {
         Long userId = query.userId();
-        if (userId == null) {
-            throw userIdNullPointerException();
-        }
         Optional<User> find = users.findByUserId(userId);
         if(find.isEmpty()) {
             throw userNotFoundException();
@@ -36,9 +33,5 @@ public class UserGetDetailByIdUseCase extends Query<UserGetDetail, Void> {
 
     private ApplicationException userNotFoundException() {
         return new ApplicationException(EnumUserException.USER_NOT_FOUND, EnumUserException.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    private ApplicationException userIdNullPointerException() {
-        return new ApplicationException(EnumUserException.USER_ID_NOT_FOUND, EnumUserException.USER_ID_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

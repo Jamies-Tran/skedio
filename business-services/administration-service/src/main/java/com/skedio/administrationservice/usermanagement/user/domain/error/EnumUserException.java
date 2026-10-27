@@ -12,8 +12,7 @@ import lombok.experimental.FieldDefaults;
 public enum EnumUserException implements ApplicationErrorCode {
     USER_DUPLICATED("USER_001", "User duplicated"),
     USER_NOT_FOUND("USER_002", "User not found"),
-    USER_ID_NOT_FOUND("USER_003", "User id null"),
-    USER_UUID_NOT_FOUND("USER_004", "User uuid null"),;
+    USER_IN_USE("USER_003", "User in used"),;
 
     String code;
     String message;

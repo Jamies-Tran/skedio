@@ -38,4 +38,12 @@ interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
                         OR u.createdAt BETWEEN :#{#userSearch.timeRangeFirst()} AND :#{#userSearch.timeRangeLast()})
         """)
     Page<UserJpaEntity> findAll(UserSearch userSearch, Pageable pageable);
+
+    @Query("""
+        SELECT COUNT(ua) > 0
+        FROM UserJpaEntity u
+        INNER JOIN UsUserApplication ua ON u.userUuid = ua.userUuid
+        WHERE u.userUuid = :userUuid
+        """)
+    Boolean existsUseInApplication(UUID userUuid);
 }

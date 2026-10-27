@@ -60,4 +60,8 @@ public class UserRepository {
     public void delete(UUID userUuid) {
         repository.deleteByUserUuid(userUuid);
     }
+
+    public Boolean existsUserInApplication(UUID userUuid) {
+        return repository.existsUseInApplication(userUuid);
+    }
 }

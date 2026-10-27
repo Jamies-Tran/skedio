@@ -32,6 +32,14 @@ public class ClientRepository {
         return repository.existsByClientName(clientName);
     }
 
+    public Boolean existsScopeInClient(UUID clientUuid) {
+        return repository.existsScopeInClient(clientUuid);
+    }
+
+    public Boolean existsScopeInClientByApplication(UUID applicationUuid) {
+        return repository.existsScopeInClientByApplicationUuid(applicationUuid);
+    }
+
     public Client save(Client client) {
         ClientJpaEntity entity = entityMapper.toEntity(client);
         ClientJpaEntity saved = repository.save(entity);

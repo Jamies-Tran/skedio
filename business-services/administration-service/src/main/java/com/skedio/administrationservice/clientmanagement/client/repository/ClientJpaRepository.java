@@ -16,6 +16,14 @@ interface ClientJpaRepository extends JpaRepository<ClientJpaEntity, Long> {
 
     Boolean existsByClientName(String clientName);
 
+    Optional<ClientJpaEntity> findByClientUuid(UUID uuid);
+
+    @Modifying
+    void deleteByClientUuid(UUID uuid);
+
+    @Modifying
+    void deleteAllByApplicationUuid(UUID applicationUuid);
+
     @Query("""
         SELECT COUNT(a) > 0
         FROM ClApplication a
@@ -24,13 +32,21 @@ interface ClientJpaRepository extends JpaRepository<ClientJpaEntity, Long> {
         """)
     Boolean existsApplicationByApplicationUuidAndEnabled(UUID applicationUuid);
 
-    Optional<ClientJpaEntity> findByClientUuid(UUID uuid);
+    @Query("""
+        SELECT COUNT(cs) > 0
+        FROM ClientJpaEntity c
+        INNER JOIN ClClientScope cs ON c.clientUuid = cs.clientUuid
+        WHERE c.clientUuid = :clientUuid
+        """)
+    Boolean existsScopeInClient(UUID clientUuid);
 
-    @Modifying
-    void deleteByClientUuid(UUID uuid);
-
-    @Modifying
-    void deleteAllByApplicationUuid(UUID applicationUuid);
+    @Query("""
+        SELECT COUNT(cs) > 0
+        FROM ClientJpaEntity c
+        INNER JOIN ClClientScope cs ON cs.clientUuid = c.clientUuid
+        WHERE c.applicationUuid = :applicationUuid
+        """)
+    Boolean existsScopeInClientByApplicationUuid(UUID applicationUuid);
 
     @Query("""
         SELECT c
