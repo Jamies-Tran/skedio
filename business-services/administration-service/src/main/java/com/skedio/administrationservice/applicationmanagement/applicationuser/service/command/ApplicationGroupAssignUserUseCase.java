@@ -25,10 +25,7 @@ public class ApplicationGroupAddUserListUseCase extends Command<ApplicationUserA
     @Override
     public Void handle(ApplicationUserAddList command) {
         UUID applicationUuid = command.applicationUuid();
-        Boolean existsApp = applicationUsers.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
-        if(!existsApp) {
-            throw appNotFoundException();
-        }
+        validateBeforeSave(applicationUuid);
         List<UUID> userUuids = command.userUuids();
         Boolean existsAllUser = applicationUsers.existsAllUsersByUserUuidList(userUuids);
         if(!existsAllUser) {
@@ -38,6 +35,13 @@ public class ApplicationGroupAddUserListUseCase extends Command<ApplicationUserA
         List<ApplicationUser> users = command.computeSaveListExcludeUserUuid(userExistsInApplication);
         applicationUsers.saveAll(users);
         return null;
+    }
+
+    private void validateBeforeSave(UUID applicationUuid) {
+        Boolean existsApp = applicationUsers.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
+        if(!existsApp) {
+            throw appNotFoundException();
+        }
     }
 
     private ApplicationException appNotFoundException() {
