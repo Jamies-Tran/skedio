@@ -1,6 +1,5 @@
 package com.skedio.administrationservice.clientmanagement.clientscope.service.command;
 
-import com.skedio.administrationservice.clientmanagement.client.domain.error.EnumClientException;
 import com.skedio.administrationservice.clientmanagement.clientscope.domain.ClientScope;
 import com.skedio.administrationservice.clientmanagement.clientscope.domain.argument.ClientScopeAssign;
 import com.skedio.administrationservice.clientmanagement.clientscope.domain.argument.ClientScopeAssignList;
@@ -31,7 +30,7 @@ public class ClientScopeAssignListUseCase extends Command<ClientScopeAssignList,
         UUID clientUuid = command.clientUuid();
         Boolean exists = clientScopes.existsClientByClientUuidAndEnabledTrue(clientUuid);
         if(!exists) {
-            throw clientNotFoundDupInListException();
+            throw clientNotFoundException();
         }
         List<ClientScopeAssign> assigns = command.assignList();
         validateBeforeSave(clientUuid, assigns);
@@ -59,7 +58,7 @@ public class ClientScopeAssignListUseCase extends Command<ClientScopeAssignList,
         }
     }
 
-    private ApplicationException clientNotFoundDupInListException() {
+    private ApplicationException clientNotFoundException() {
         throw new ApplicationException(EnumClientScopeException.CLIENT_NOT_FOUND, EnumClientScopeException.CLIENT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
     }
 

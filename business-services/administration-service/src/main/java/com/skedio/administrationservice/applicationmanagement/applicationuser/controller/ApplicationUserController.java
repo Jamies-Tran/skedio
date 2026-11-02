@@ -3,10 +3,10 @@ package com.skedio.administrationservice.applicationmanagement.applicationuser.c
 import com.skedio.administrationservice.applicationmanagement.applications.domain.argument.ApplicationGroupUuid;
 import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationGroupUserResponse;
 import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationGroupUserResponseMapper;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationUserUuidListRequest;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.controller.models.ApplicationUserListRequest;
 import com.skedio.administrationservice.applicationmanagement.applicationuser.domain.argument.ApplicationGroupGetUser;
 import com.skedio.administrationservice.applicationmanagement.applicationuser.domain.argument.ApplicationUserAddList;
-import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupAddUserListUseCase;
+import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupAssignUserUseCase;
 import com.skedio.administrationservice.applicationmanagement.applicationuser.service.command.ApplicationGroupClearUserUserCase;
 import com.skedio.administrationservice.applicationmanagement.applicationuser.service.query.ApplicationGroupGetUserUseCase;
 import com.skedio.corestarter.template.ApiResponse;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class ApplicationUserController {
     ApplicationGroupGetUserUseCase getUserUseCase;
     ApplicationGroupClearUserUserCase clearUserUserCase;
-    ApplicationGroupAddUserListUseCase addUserListUseCase;
+    ApplicationGroupAssignUserUseCase addUserListUseCase;
     ApplicationGroupUserResponseMapper userResponseMapper;
 
     @GetMapping("/{applicationUuid}/get-users")
@@ -52,9 +52,9 @@ public class ApplicationUserController {
         return ApiResponse.page(responses);
     }
 
-    @PostMapping("/add-users")
+    @PostMapping("/assign-users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void addUserListToApplication(@RequestParam UUID applicationUuid, @RequestBody @Validated ApplicationUserUuidListRequest request) {
+    void addUserListToApplication(@RequestParam UUID applicationUuid, @RequestBody @Validated ApplicationUserListRequest request) {
         List<UUID> userUuids = request.userUuids();
         ApplicationUserAddList addList = new ApplicationUserAddList(applicationUuid, userUuids);
         addUserListUseCase.handle(addList);

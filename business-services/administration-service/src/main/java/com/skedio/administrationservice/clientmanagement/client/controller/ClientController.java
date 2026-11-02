@@ -33,7 +33,6 @@ public class ClientController {
     ClientEnableUseCase enableUseCase;
     ClientDisableUseCase disableUseCase;
     ClientDeleteUseCase deleteUseCase;
-    ClientDeleteInApplicationUseCase deleteInApplicationUseCase;
     ClientResponseMapper responseMapper;
 
     @PostMapping("/create-list")
@@ -108,12 +107,5 @@ public class ClientController {
     void deleteByClientUuid(@PathVariable UUID clientUuid) {
         ClientUuid uuid = new ClientUuid(clientUuid);
         deleteUseCase.handle(uuid);
-    }
-
-    @DeleteMapping("/all-in-application/{applicationUuid}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteInApplication(@PathVariable UUID applicationUuid) {
-        ClientDeleteAllByApplicationUuid deleteAllByApplicationUuid = new ClientDeleteAllByApplicationUuid(applicationUuid);
-        deleteInApplicationUseCase.handle(deleteAllByApplicationUuid);
     }
 }

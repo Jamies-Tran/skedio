@@ -25,6 +25,13 @@ interface ClientScopeJpaRepository extends JpaRepository<ClientScopeJpaEntity, L
     Boolean existsClientByClientUuidAndEnabledTrue(UUID clientUuid);
 
     @Query("""
+        SELECT COUNT(c) > 0
+        FROM CSClient  c
+        WHERE c.clientUuid = :clientUuid
+        """)
+    Boolean existsClientByClientUuid(UUID clientUuid);
+
+    @Query("""
         SELECT COUNT(s) > 0
         FROM ClScope s
         WHERE s.scopeUuid = :scopeUuid

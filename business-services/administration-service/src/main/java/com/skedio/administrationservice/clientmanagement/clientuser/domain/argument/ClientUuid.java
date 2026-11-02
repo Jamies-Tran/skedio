@@ -1,4 +1,8 @@
 package com.skedio.administrationservice.clientmanagement.clientuser.domain.argument;
 
-public record ClientUuid() {
+import java.util.UUID;
+
+public record ClientUuid(
+        UUID uuid
+) {
 }

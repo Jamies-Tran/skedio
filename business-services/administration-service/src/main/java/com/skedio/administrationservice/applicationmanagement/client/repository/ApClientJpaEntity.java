@@ -18,7 +18,7 @@ import java.util.UUID;
 @Entity(name = "ApClient")
 @Table(name = "clients")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ClientJpaEntity {
+class ApClientJpaEntity {
     @Id
     Long clientId;
 

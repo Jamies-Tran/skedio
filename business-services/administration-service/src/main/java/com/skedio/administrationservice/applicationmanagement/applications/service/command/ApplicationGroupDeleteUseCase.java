@@ -23,12 +23,12 @@ public class ApplicationGroupDeleteUseCase extends Command<ApplicationGroupUuid,
     @Override
     public Void handle(ApplicationGroupUuid command) {
         UUID applicationGroupUuid = command.uuid();
-        allowDelete(applicationGroupUuid);
+        validateBeforeDelete(applicationGroupUuid);
         applicationGroups.delete(applicationGroupUuid);
         return null;
     }
 
-    private void allowDelete(UUID applicationGroupUuid) {
+    private void validateBeforeDelete(UUID applicationGroupUuid) {
         Boolean existUserInApp = applicationGroups.existUserInApplication(applicationGroupUuid);
         Boolean existClientInApp = applicationGroups.existClientInApplication(applicationGroupUuid);
         if (existUserInApp || existClientInApp) {

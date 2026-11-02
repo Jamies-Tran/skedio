@@ -43,6 +43,10 @@ public class ApplicationUserRepository {
         return repository.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
     }
 
+    public Boolean existsApplicationByApplicationUuid(UUID applicationUuid) {
+        return repository.existsApplicationByApplicationUuid(applicationUuid);
+    }
+
     public List<UUID> findAllUserUuidExistInApplication(UUID applicationUuid) {
         return repository.findAllUserUuidByApplicationUuid(applicationUuid);
     }

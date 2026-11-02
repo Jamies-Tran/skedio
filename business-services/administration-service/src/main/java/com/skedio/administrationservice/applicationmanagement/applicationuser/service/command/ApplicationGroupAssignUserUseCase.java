@@ -19,28 +19,32 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ApplicationGroupAddUserListUseCase extends Command<ApplicationUserAddList, Void> {
+public class ApplicationGroupAssignUserUseCase extends Command<ApplicationUserAddList, Void> {
     ApplicationUserRepository applicationUsers;
 
     @Override
     public Void handle(ApplicationUserAddList command) {
         UUID applicationUuid = command.applicationUuid();
-        validateBeforeSave(applicationUuid);
+        validateApplicationBeforeSave(applicationUuid);
         List<UUID> userUuids = command.userUuids();
-        Boolean existsAllUser = applicationUsers.existsAllUsersByUserUuidList(userUuids);
-        if(!existsAllUser) {
-            throw userListNotExistAllException();
-        }
+        validateUserBeforeBeforeSave(userUuids);
         List<UUID> userExistsInApplication = applicationUsers.findAllUserUuidExistInApplication(applicationUuid);
         List<ApplicationUser> users = command.computeSaveListExcludeUserUuid(userExistsInApplication);
         applicationUsers.saveAll(users);
         return null;
     }
 
-    private void validateBeforeSave(UUID applicationUuid) {
+    private void validateApplicationBeforeSave(UUID applicationUuid) {
         Boolean existsApp = applicationUsers.existsApplicationByApplicationUuidAndEnabled(applicationUuid);
         if(!existsApp) {
             throw appNotFoundException();
+        }
+    }
+
+    private void validateUserBeforeBeforeSave(List<UUID> userUuids) {
+        Boolean existsAllUser = applicationUsers.existsAllUsersByUserUuidList(userUuids);
+        if(!existsAllUser) {
+            throw userListNotExistAllException();
         }
     }
 

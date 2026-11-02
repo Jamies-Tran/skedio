@@ -46,6 +46,13 @@ public interface ApplicationUserJpaRepository extends JpaRepository<ApplicationU
     Boolean existsApplicationByApplicationUuidAndEnabled(UUID applicationUuid);
 
     @Query("""
+        SELECT COUNT(a) > 0
+        FROM AuApplication a
+        WHERE a.applicationUuid = :applicationUuid
+        """)
+    Boolean existsApplicationByApplicationUuid(UUID applicationUuid);
+
+    @Query("""
         SELECT au.userUuid
         FROM ApplicationUserJpaEntity au
         WHERE au.applicationUuid = :applicationUuid

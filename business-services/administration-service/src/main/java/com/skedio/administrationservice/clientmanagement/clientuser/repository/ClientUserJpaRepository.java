@@ -5,6 +5,7 @@ import com.skedio.administrationservice.clientmanagement.clientuser.domain.argum
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -12,6 +13,9 @@ import java.util.UUID;
 
 interface ClientUserJpaRepository extends JpaRepository<ClientUserJpaEntity, Long> {
     Boolean existsByClientUuidAndUserUuidIn(UUID clientUuid, List<UUID> userUuIds);
+
+    @Modifying
+    void deleteAllByClientUuid(UUID clientUuid);
 
     @Query("""
         SELECT COUNT(c) > 0
@@ -22,9 +26,16 @@ interface ClientUserJpaRepository extends JpaRepository<ClientUserJpaEntity, Lon
     Boolean existsClientByClientUuidAndEnabledTrue(UUID clientUuid);
 
     @Query("""
+        SELECT COUNT(c) > 0
+        FROM CSClient c
+        WHERE c.clientUuid = :clientUuid
+        """)
+    Boolean existsClientByClientUuid(UUID clientUuid);
+
+    @Query("""
         SELECT u
-        FROM ClientUserJpaEntity cu
-        INNER JOIN CUUser u ON cu.userUuid = u.userUuid
+        FROM CUUser u
+        INNER JOIN ClientUserJpaEntity cu ON cu.userUuid = u.userUuid
         WHERE cu.clientUuid = :#{#search.clientUuid()}
             AND (:#{#search.searchEmpty()} = TRUE
                     OR u.search LIKE %:#{#search.search()}%)

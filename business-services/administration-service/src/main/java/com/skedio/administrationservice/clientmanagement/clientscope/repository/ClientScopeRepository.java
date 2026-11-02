@@ -24,6 +24,10 @@ public class ClientScopeRepository {
         return repository.existsClientByClientUuidAndEnabledTrue(clientUuid);
     }
 
+    public Boolean existsClientByClientUuid(UUID clientUuid) {
+        return repository.existsClientByClientUuid(clientUuid);
+    }
+
     public Boolean existsByClientUuidAndScopeUuidIn(UUID clientUuid, List<UUID> scopeUuids) {
         return repository.existsByClientUuidAndScopeUuidIn(clientUuid, scopeUuids);
     }

@@ -6,7 +6,9 @@ import com.skedio.administrationservice.clientmanagement.clientuser.controller.m
 import com.skedio.administrationservice.clientmanagement.clientuser.domain.ClientUser;
 import com.skedio.administrationservice.clientmanagement.clientuser.domain.argument.ClientUserAssign;
 import com.skedio.administrationservice.clientmanagement.clientuser.domain.argument.ClientUserSearch;
+import com.skedio.administrationservice.clientmanagement.clientuser.domain.argument.ClientUuid;
 import com.skedio.administrationservice.clientmanagement.clientuser.service.command.ClientAssignUserListUseCase;
+import com.skedio.administrationservice.clientmanagement.clientuser.service.command.ClientClearUserUseCase;
 import com.skedio.administrationservice.clientmanagement.clientuser.service.query.ClientSearchUserUseCase;
 import com.skedio.corestarter.template.ApiResponse;
 import lombok.AccessLevel;
@@ -27,6 +29,7 @@ import java.util.UUID;
 public class ClientUserController {
     ClientAssignUserListUseCase assignUserListUseCase;
     ClientSearchUserUseCase searchUserUseCase;
+    ClientClearUserUseCase clearUserUseCase;
     UserResponseMapper userResponseMapper;
 
     @PostMapping("/{clientUuid}/assign-users")
@@ -49,5 +52,12 @@ public class ClientUserController {
         Page<ClientUser> clientUsers = searchUserUseCase.handle(clientUserSearch);
         Page<UserResponse> responses = clientUsers.map(userResponseMapper::toDto);
         return ApiResponse.page(responses);
+    }
+
+    @DeleteMapping("/{clientUuid}/clear-users")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void clearUser(@PathVariable UUID clientUuid) {
+        ClientUuid command = new ClientUuid(clientUuid);
+        clearUserUseCase.handle(command);
     }
 }

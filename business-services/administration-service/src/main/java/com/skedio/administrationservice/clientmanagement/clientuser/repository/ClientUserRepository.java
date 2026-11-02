@@ -30,6 +30,10 @@ public class ClientUserRepository {
         return repository.existsClientByClientUuidAndEnabledTrue(clientUuid);
     }
 
+    public Boolean existsClientByClientUuid(UUID clientUuid) {
+        return repository.existsClientByClientUuid(clientUuid);
+    }
+
     public Boolean existsByClientUuidAndUserUuidIn(UUID clientUuid, List<UUID> userUuids) {
         return repository.existsByClientUuidAndUserUuidIn(clientUuid, userUuids);
     }
@@ -37,5 +41,9 @@ public class ClientUserRepository {
     public Page<ClientUser> findAllUserInClient(ClientUserSearch search, PageRequest pageRequest) {
         return repository.findAllUserInClient(search, pageRequest)
                 .map(userEntityMapper::toDomain);
+    }
+
+    public void deleteAllByClientUuid(UUID clientUuid) {
+        repository.deleteAllByClientUuid(clientUuid);
     }
 }
