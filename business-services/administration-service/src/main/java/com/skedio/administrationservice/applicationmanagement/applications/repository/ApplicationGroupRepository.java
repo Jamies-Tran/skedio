@@ -20,7 +20,6 @@ import java.util.UUID;
 public class ApplicationGroupRepository {
     ApplicationGroupJpaRepository repository;
     ApplicationGroupEntityMapper mapper;
-    ClientEntityMapper clientEntityMapper;
 
     public List<ApplicationGroup> saveAll(List<ApplicationGroup> applicationGroups) {
         List<ApplicationGroupJpaEntity> entities = mapper.toEntity(applicationGroups);

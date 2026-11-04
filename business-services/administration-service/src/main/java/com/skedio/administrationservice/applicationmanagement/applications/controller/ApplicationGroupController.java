@@ -2,7 +2,6 @@ package com.skedio.administrationservice.applicationmanagement.applications.cont
 
 import com.skedio.administrationservice.applicationmanagement.applications.controller.models.*;
 import com.skedio.administrationservice.applicationmanagement.applications.domain.ApplicationGroup;
-import com.skedio.administrationservice.applicationmanagement.applications.domain.Client;
 import com.skedio.administrationservice.applicationmanagement.applications.domain.argument.*;
 import com.skedio.administrationservice.applicationmanagement.applications.service.command.*;
 import com.skedio.administrationservice.applicationmanagement.applications.service.query.ApplicationGroupGetDetailUseCase;

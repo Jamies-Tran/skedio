@@ -2,6 +2,7 @@ package com.skedio.administrationservice.clientmanagement.client.controller.mode
 
 import lombok.With;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record ClientResponse(
@@ -11,5 +12,9 @@ public record ClientResponse(
         String clientName,
         String avatar,
         String description,
-        Boolean enabled
+        Boolean enabled,
+        String createdBy,
+        LocalDateTime createdAt,
+        String updatedBy,
+        LocalDateTime updatedAt
 ) {}
