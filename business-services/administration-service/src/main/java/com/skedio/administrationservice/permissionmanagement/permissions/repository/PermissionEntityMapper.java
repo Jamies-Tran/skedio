@@ -1,6 +1,6 @@
-package com.skedio.administrationservice.permissionmanagement.permission.repository;
+package com.skedio.administrationservice.permissionmanagement.permissions.repository;
 
-import com.skedio.administrationservice.permissionmanagement.permission.domain.Permission;
+import com.skedio.administrationservice.permissionmanagement.permissions.domain.Permission;
 import com.skedio.corestarter.configuration.GlobalMapStructConfig;
 import com.skedio.corestarter.template.EntityMapper;
 import org.mapstruct.Mapper;

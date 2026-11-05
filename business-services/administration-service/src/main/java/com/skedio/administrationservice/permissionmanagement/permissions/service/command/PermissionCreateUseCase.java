@@ -1,9 +1,9 @@
-package com.skedio.administrationservice.permissionmanagement.permission.service.command;
+package com.skedio.administrationservice.permissionmanagement.permissions.service.command;
 
-import com.skedio.administrationservice.permissionmanagement.permission.domain.Permission;
-import com.skedio.administrationservice.permissionmanagement.permission.domain.argument.PermissionCreate;
-import com.skedio.administrationservice.permissionmanagement.permission.domain.error.EnumPermissionException;
-import com.skedio.administrationservice.permissionmanagement.permission.repository.PermissionRepository;
+import com.skedio.administrationservice.permissionmanagement.permissions.domain.Permission;
+import com.skedio.administrationservice.permissionmanagement.permissions.domain.argument.PermissionCreate;
+import com.skedio.administrationservice.permissionmanagement.permissions.domain.error.EnumPermissionException;
+import com.skedio.administrationservice.permissionmanagement.permissions.repository.PermissionRepository;
 import com.skedio.corestarter.advice.ApplicationException;
 import com.skedio.corestarter.template.Command;
 import com.skedio.corestarter.template.Void;
@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

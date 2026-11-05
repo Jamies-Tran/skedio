@@ -1,6 +1,6 @@
-package com.skedio.administrationservice.permissionmanagement.permission.domain.argument;
+package com.skedio.administrationservice.permissionmanagement.permissions.domain.argument;
 
-import com.skedio.administrationservice.permissionmanagement.permission.controller.models.PermissionCreateRequest;
+import com.skedio.administrationservice.permissionmanagement.permissions.controller.models.PermissionCreateRequest;
 import lombok.Builder;
 import lombok.NonNull;
 

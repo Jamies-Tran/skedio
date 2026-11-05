@@ -1,4 +1,4 @@
-package com.skedio.administrationservice.permissionmanagement.permission.controller.models;
+package com.skedio.administrationservice.permissionmanagement.permissions.controller.models;
 
 import jakarta.validation.constraints.NotBlank;
 
